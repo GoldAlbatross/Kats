@@ -3,8 +3,10 @@ package com.example.sobes
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sobes.okhttp.Cat
 
-class KatAdapter(val list: ArrayList<CatData>): RecyclerView.Adapter<KatViewHolder>() {
+class KatAdapter: RecyclerView.Adapter<KatViewHolder>() {
+    val list = ArrayList<Cat>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KatViewHolder {
         return KatViewHolder(LayoutInflater.from(parent.context)
