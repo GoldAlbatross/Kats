@@ -4,8 +4,8 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface CatApi {
-    @GET("v1/images/search")
+    @GET("v1/images/0XYvRd7oD")
     fun getCats(): Call<ResponseCats>
 }
 
-class ResponseCats (val cats: CatData)
+class ResponseCats (val url: String)
