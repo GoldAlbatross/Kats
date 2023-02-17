@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResponse(call: Call<ResponseCats>, response: Response<ResponseCats>) {
 
         if (response.code() == 200) {
-            list.add(response.body()?.cats!!)
+            list.add(CatData(response.body()?.url!!))
             recyler.adapter?.notifyDataSetChanged()
 
         }
