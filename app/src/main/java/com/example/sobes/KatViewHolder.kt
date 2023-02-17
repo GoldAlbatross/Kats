@@ -10,9 +10,9 @@ import com.example.sobes.okhttp.Cat
 class KatViewHolder(parent: View): RecyclerView.ViewHolder(parent) {
     val image: ImageView = parent.findViewById(R.id.item)
 
-    fun bind( cat: Cat) {
+    fun bind( url: String) {
         Glide.with(itemView.context)
-            .load(cat.url)
+            .load(url)
             .into(image)
     }
 

@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface CatApi {
     @GET("v1/images/search")
-    fun getCats(): Call<List<ResponseCat>>
+    fun getCats(): Call<List<Cat>>
 }
 
 

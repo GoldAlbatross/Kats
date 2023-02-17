@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sobes.okhttp.Cat
 import com.example.sobes.okhttp.CatApi
-import com.example.sobes.okhttp.ResponseCat
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,10 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
 
     lateinit var recyler: RecyclerView
-    val list = mutableListOf<Cat>()
+    var catAdapter = KatAdapter()
 
-    val baseUrl = "https://api.thecatapi.com/"
-    val logging = HttpLoggingInterceptor().apply {
+    private val baseUrl = "https://api.thecatapi.com/"
+    private val logging = HttpLoggingInterceptor().apply {
         setLevel(HttpLoggingInterceptor.Level.BODY)
     }
     val x = OkHttpClient.Builder().addInterceptor(logging).build()
@@ -38,18 +37,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         recyler = findViewById(R.id.recycler)
-        recyler.adapter = KatAdapter()
         recyler.layoutManager = LinearLayoutManager(this)
 
-    catService.getCats().enqueue(object : Callback<List<ResponseCat>>{
+    catService.getCats().enqueue(object : Callback<List<Cat>>{
 
-    override fun onResponse(call: Call<List<ResponseCat>>, response: Response<List<ResponseCat>>) {
+    override fun onResponse(call: Call<List<Cat>>, response: Response<List<Cat>>) {
         if (response.code() == 200) {
-            Toast.makeText(this@MainActivity, "${response.body()?.get(0)?.catList}", Toast.LENGTH_LONG).show()
+            catAdapter.urls.add(response.body()?.get(0)?.url.toString())
+            recyler.adapter = catAdapter
+            recyler.adapter?.notifyDataSetChanged()
         }
     }
 
-    override fun onFailure(call: Call<List<ResponseCat>>, t: Throwable) {
+    override fun onFailure(call: Call<List<Cat>>, t: Throwable) {
         Toast.makeText(this@MainActivity, t.message, Toast.LENGTH_LONG).show()
     }
 
