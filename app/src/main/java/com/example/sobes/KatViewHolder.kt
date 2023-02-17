@@ -1,16 +1,18 @@
 package com.example.sobes
 
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 
 class KatViewHolder(parent: View): RecyclerView.ViewHolder(parent) {
-    val text: TextView = parent.findViewById(R.id.item)
+    val image: ImageView = parent.findViewById(R.id.item)
 
-    fun bind(kat: Kat) {
-        text.text = kat.name
+    fun bind( catData: CatData) {
+        Glide.with(itemView.context)
+            .load(catData.url)
+            .into(image)
     }
 
 }
