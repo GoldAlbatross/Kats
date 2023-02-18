@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
 
     lateinit var recyler: RecyclerView
-    var catAdapter = KatAdapter()
+    private var catAdapter = KatAdapter { showCat() }
 
     private val baseUrl = "https://api.thecatapi.com/"
     private val logging = HttpLoggingInterceptor().apply {
@@ -39,21 +39,29 @@ class MainActivity : AppCompatActivity() {
         recyler = findViewById(R.id.recycler)
         recyler.layoutManager = LinearLayoutManager(this)
 
-    catService.getCats().enqueue(object : Callback<List<Cat>>{
-
-    override fun onResponse(call: Call<List<Cat>>, response: Response<List<Cat>>) {
-        if (response.code() == 200) {
-            catAdapter.urls.add(response.body()?.get(0)?.url.toString())
-            recyler.adapter = catAdapter
-            recyler.adapter?.notifyDataSetChanged()
-        }
+        catService.getCats().enqueue(object : Callback<List<Cat>>{
+            override fun onResponse(call: Call<List<Cat>>, response: Response<List<Cat>>) {
+                if (response.code() == 200) {
+                    catAdapter.urls.add(response.body()?.get(0)?.url.toString())
+                    recyler.adapter = catAdapter
+                    recyler.adapter?.notifyDataSetChanged()
+                }
+            }
+            override fun onFailure(call: Call<List<Cat>>, t: Throwable) {
+                Toast.makeText(this@MainActivity, t.message, Toast.LENGTH_LONG).show()
+            } })
     }
-
-    override fun onFailure(call: Call<List<Cat>>, t: Throwable) {
-        Toast.makeText(this@MainActivity, t.message, Toast.LENGTH_LONG).show()
-    }
-
-})
-
+    private fun showCat() {
+        catService.getCats().enqueue(object : Callback<List<Cat>>{
+            override fun onResponse(call: Call<List<Cat>>, response: Response<List<Cat>>) {
+                if (response.code() == 200) {
+                    catAdapter.urls.add(response.body()?.get(0)?.url.toString())
+                    recyler.adapter = catAdapter
+                    recyler.adapter?.notifyDataSetChanged()
+                }
+            }
+            override fun onFailure(call: Call<List<Cat>>, t: Throwable) {
+                Toast.makeText(this@MainActivity, t.message, Toast.LENGTH_LONG).show()
+            } })
     }
 }
